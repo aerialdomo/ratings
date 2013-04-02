@@ -19,7 +19,7 @@ class User(Base):
 	password = Column(String(64), nullable = True)
 	age = Column(Integer, nullable = True)
 	zipcode = Column(String(15), nullable = True)
-	
+
 	# don't need __init__ if we are inheriting from Base
 	# def __init__(self, age, zipcode, email = None, password = None):
 	# 	self.email = email
@@ -32,8 +32,8 @@ class Movies(Base):
 
 	id = Column(Integer, primary_key = True)
 	name = Column(String(156))
-	released_at = Column(DateTime())
-	imbd_url = Column(String(156))
+	released_at = Column(String(50))
+	imdb_url = Column(String(156))
 
 	# def __init__(self, name, released_at, imbd_url):
 	# 	self.name = name
