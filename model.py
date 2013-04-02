@@ -1,6 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import sessionmaker
 
 # These are global constants?
@@ -32,7 +32,8 @@ class Movies(Base):
 
 	id = Column(Integer, primary_key = True)
 	name = Column(String(156))
-	released_at = Column(String(50))
+	released_at = Column(Date())
+	#released_at = Column(String(50))
 	imdb_url = Column(String(156))
 
 	# def __init__(self, name, released_at, imbd_url):
@@ -67,7 +68,7 @@ def connect():
 
 def main():
     """In case we need this for something"""
-    pass
+    session = connect()
 
 if __name__ == "__main__":
     main()
