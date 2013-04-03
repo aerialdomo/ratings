@@ -1,15 +1,19 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, Integer, String, Date
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship, backref, scoped_session
 
 # These are global constants?
-ENGINE = None
-Session = None
+engine = create_engine("sqlite:///ratings.db", echo=False)
+session = scoped_session(sessionmaker(bind=engine,
+										autocommit = False,
+										autoflush = False))
 
 Base = declarative_base()
+Base.query = session.query_property()
 
 ### Class declarations go here
+
 class User(Base):
 	#this class will be stored in a table named users
 	__tablename__ = "users"
@@ -27,7 +31,7 @@ class User(Base):
 	# 	self.age = age
 	# 	self.zipcode = zipcode
 
-class Movies(Base):
+class Movie(Base):
 	__tablename__ = "movies"
 
 	id = Column(Integer, primary_key = True)
@@ -41,13 +45,16 @@ class Movies(Base):
 	# 	self.released_at = released_at
 	# 	self.imbd_url = imbd_url
 
-class Ratings(Base):
+class Rating(Base):
 	__tablename__= "ratings"
 
 	id = Column(Integer, primary_key = True)
-	movie_id = Column(Integer)
-	user_id = Column(Integer)
+	movie_id = Column(Integer, ForeignKey('movies.id'))
+	user_id = Column(Integer, ForeignKey('users.id'))
 	rating = Column(Integer)
+
+	movie = relationship('Movie', backref=backref('ratings'))
+	user = relationship('User', backref=backref('ratings', order_by=id))
 
 	# def __init__(self, movie_id, user_id, rating):
 	# 	self.movie_id = movie_id

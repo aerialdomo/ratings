@@ -1,6 +1,6 @@
 import model
-from model import User, Movies, Ratings
-import csv
+from model import User, Movie, Rating
+# import csv
 from datetime import datetime, date
 import time
 
@@ -39,7 +39,7 @@ def load_movies(session):
         else:
             struct_time = None
         #decode needs to return to a variable
-        add_object = Movies(id=new_object['id'], name=name, released_at=struct_time, imdb_url=new_object['imdb_url'])
+        add_object = Movie(id=new_object['id'], name=name, released_at=struct_time, imdb_url=new_object['imdb_url'])
         session.add(add_object)
     session.commit()
 
@@ -52,7 +52,7 @@ def load_ratings(session):
         newline = lines.strip("\n").split()
         #print newline
         new_object = dict(zip(fields,newline))
-        add_object = Ratings(user_id=new_object['user_id'], movie_id=new_object['movie_id'],
+        add_object = Rating(user_id=new_object['user_id'], movie_id=new_object['movie_id'],
             rating=new_object['rating'])
         session.add(add_object)
     session.commit()
@@ -60,9 +60,9 @@ def load_ratings(session):
 
 def main(session):
     # You'll call each of the load_* functions with the session as an argument
-    #load_users(session)
+    load_users(session)
     load_movies(session)
-    #load_ratings(session)
+    load_ratings(session)
 
 
 if __name__ == "__main__":
