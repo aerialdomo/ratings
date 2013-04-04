@@ -23,29 +23,32 @@ def login():
 	- login.html is a form that contains user name, password
 	- info in form is posted to authenticate
 	"""
+	
+	if request.method == 'POST':
+		pass
+		# do the login.
+	else:
+		# show login form
+		email = request.form['input_email']
+		password = request.form['input_password']
+		# do we send user to the authentication page?
 	return render_template("login.html",)
-	# if request.method == 'POST':
-	# 	pass
-	# 	# do the login.
-	# else:
-	# 	# show login form
-	# 	email = request.form['input_email']
-	# 	password = request.form['input_password']
-	# 	# do we a
-	# return render_template("login.html",)
 
+	
 def authenticate():
 	"""
 	- compares if username, password match records in database
 	- returns redirect to a page (list_ratings_by_user?)
 	"""
 	pass
-
+@app.route('/mooovies',)
 def list_movies_by_user():
 	"""
 	- get request
 	"""
-	pass
+	uid = 1
+	movie_list=model.session.query(model.Rating).filter_by(user_id = uid).all()
+	return render_template("/mooovies.html", movie_list = movie_list, uid = uid)
 
 def list_ratings_by_user():
 	"""
