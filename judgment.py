@@ -4,6 +4,7 @@ import model
 import requests
 app = Flask(__name__)
 
+#Should do a better secret key in the future
 app.secret_key = 'teapot'
 
 @app.route("/")
@@ -23,42 +24,48 @@ def signup():
 
 @app.route("/login")
 def login():
-	# error = None
-	# if request.method == 'POST': # do the login
-	# 	if request.form['id'] == model.User.id:
-	# 		error = 'Invalid id'
-	# 	elif request.form['password'] == model.User.password:
-	# 		error = 'Invalid password'
-	# 	else:
-	# 		session['logged_in'] = True
-	# 		flash('You were logged in')
-	# 		return redirect('mooovies')
-	# #else: # show login form
-	# 	#email = request.form['id']
-	# 	#password = request.form['password']
-	# 	# do we send user to the authentication page?
+	#does not need code in here, the form data in login.html will pass to /authenticate
 	return render_template("login.html", )
 
 @app.route('/authenticate', methods=["POST"])	
 def authenticate():
+	#this is the data that is passed in from login.html form
 	form_password = request.form['password']
 	form_uid = request.form['id']
+	#querying row from db so that we can compare form data to existing data
 	row = model.session.query(model.User).filter_by(id = form_uid).one()
+	#we converted form_uid and row.id to int
+	#NEED TO FIX LATER
 	if (form_password == row.password) and (int(form_uid) == int(row.id)):
-		return render_template('/mooovies.html',)
+		#session is a GLOBAL Flask dictionary object, will save key:values across fuctions
+		session['uid'] = row.id
+		#url_for builds url to a specific function
+		return redirect(url_for('list_movies_by_user',))
 	else:
 		#flash("Please enter a valid id and password.")
 		return render_template("/wee.html",)
-		# return render_template("/login.html",)
+		
 
-@app.route('/mooovies',)
+@app.route('/logout')
+def logout():
+	#session needs to be popped off upon logout or browser close to clear 
+	session.pop('uid', None)
+	flash('You were logged out')
+	return redirect("/login.html")
+
+#@app.route('/wee.html')
+#def crash_and_burn():
+#	return redirect(url_for('crash_and_burn')
+
+@app.route('/all_movies_by_user')
 def list_movies_by_user():
 	"""
 	- get request
 	"""
-	uid = 1
+	uid = session['uid']
+	print "uid = ", uid
 	movie_list=model.session.query(model.Rating).filter_by(user_id = uid).all()
-	return render_template("/mooovies.html", movie_list = movie_list, uid = uid)
+	return render_template("/all_movies_by_user.html", movie_list = movie_list, uid = uid)
 
 def list_ratings_by_user():
 	"""
