@@ -1,6 +1,10 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, url_for, flash, session, request, g
 import model
+# import urllib
+import requests
 app = Flask(__name__)
+
+app.secret_key = 'teapot'
 
 @app.route("/")
 def index():
@@ -17,30 +21,36 @@ def signup():
 	- user is redirected to authentication page
 	"""
 
-@app.route("/login", methods = ['GET', 'POST'])
+@app.route("/login")
 def login():
-	"""
-	- login.html is a form that contains user name, password
-	- info in form is posted to authenticate
-	"""
-	
-	if request.method == 'POST':
-		pass
-		# do the login.
-	else:
-		# show login form
-		email = request.form['input_email']
-		password = request.form['input_password']
-		# do we send user to the authentication page?
-	return render_template("login.html",)
+	# error = None
+	# if request.method == 'POST': # do the login
+	# 	if request.form['id'] == model.User.id:
+	# 		error = 'Invalid id'
+	# 	elif request.form['password'] == model.User.password:
+	# 		error = 'Invalid password'
+	# 	else:
+	# 		session['logged_in'] = True
+	# 		flash('You were logged in')
+	# 		return redirect('mooovies')
+	# #else: # show login form
+	# 	#email = request.form['id']
+	# 	#password = request.form['password']
+	# 	# do we send user to the authentication page?
+	return render_template("login.html", )
 
-	
+@app.route('/authenticate', methods=["POST"])	
 def authenticate():
-	"""
-	- compares if username, password match records in database
-	- returns redirect to a page (list_ratings_by_user?)
-	"""
-	pass
+	form_password = request.form['password']
+	form_uid = request.form['id']
+	row = model.session.query(model.User).filter_by(id = form_uid).one()
+	if (form_password == row.password) and (int(form_uid) == int(row.id)):
+		return render_template('/mooovies.html',)
+	else:
+		#flash("Please enter a valid id and password.")
+		return render_template("/wee.html",)
+		# return render_template("/login.html",)
+
 @app.route('/mooovies',)
 def list_movies_by_user():
 	"""
@@ -67,6 +77,8 @@ def add_rating():
 	- post request
 	"""
 	pass
+
+
 
 if __name__=="__main__":
 	app.run(debug=True)

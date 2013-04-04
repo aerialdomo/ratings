@@ -24,13 +24,6 @@ class User(Base):
 	age = Column(Integer, nullable = True)
 	zipcode = Column(String(15), nullable = True)
 
-	# don't need __init__ if we are inheriting from Base
-	# def __init__(self, age, zipcode, email = None, password = None):
-	# 	self.email = email
-	# 	self.password = password
-	# 	self.age = age
-	# 	self.zipcode = zipcode
-
 class Movie(Base):
 	__tablename__ = "movies"
 
