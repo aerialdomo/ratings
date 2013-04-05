@@ -43,19 +43,18 @@ def authenticate():
 		return redirect(url_for('list_movies_by_user',))
 	else:
 		#flash("Please enter a valid id and password.")
-		return render_template("/wee.html",)
-		
+		return redirect(url_for("crash_and_burn"))
 
 @app.route('/logout')
 def logout():
 	#session needs to be popped off upon logout or browser close to clear 
 	session.pop('uid', None)
 	flash('You were logged out')
-	return redirect("/login.html")
+	return redirect(url_for("login"))
 
-#@app.route('/wee.html')
-#def crash_and_burn():
-#	return redirect(url_for('crash_and_burn')
+@app.route('/wee')
+def crash_and_burn():
+	return render_template('/wee.html',)
 
 @app.route('/all_movies_by_user')
 def list_movies_by_user():

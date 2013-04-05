@@ -1,24 +1,18 @@
-<html>
-	<head>
-		<link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
-			<title>Judgmental Eye</title>
+{% extends "base.html" %}	
 
-			<h1>Login to Judgmental Eye</h1>
-	</head>
+{% block content %}
 
-	
-	<body>
-		<form method="POST" action="/authenticate">
-			Id:
-			<br>
-			<input type ="text" name="id"></input>
-			<br>
-			Password:
-			<br>
-			<input type ="text" name="password"></input>
-			<br>
-			<input type="submit">
-		</form>
-	</body>
-
-</html>
+<h1>Holy Cow Bells! A log in!</h1>
+<form method="POST" action="/authenticate">
+	Id:
+	<br>
+	<input type ="text" name="id"></input>
+	<br>
+	Password:
+	<br>
+	<input type ="text" name="password"></input>
+	<br>
+	<input type="submit">
+</form>
+	<a href="signup.html">Sign your Soul Off Today!</a>
+{% endblock %}
