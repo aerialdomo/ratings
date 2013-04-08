@@ -12,15 +12,23 @@ def index():
 	user_list = model.session.query(model.User).limit(5).all()
 	return render_template("user_list.html", users=user_list)
 
-@app.route("/signup")
+@app.route("/signup.html")
+def create_user():
+	return render_template("signup.html")
+
+@app.route("/signup", methods=["POST"])
 def signup():
-	pass
 	"""
 	- method = post
 	- a form with user email, password (id is automatically generated)
 	- contents of form are submitted
 	- user is redirected to authentication page
 	"""
+	new_user = model.User(email = request.form['email'], age=request.form['age'], password = request.form['password'], zipcode=request.form['zipcode'])
+	#need the model. to let program inherit model.py
+	model.session.add(new_user).commit()
+	session['uid'] = new_user.id
+	return redirect(url_for('list_movies_by_user'))
 
 @app.route("/login")
 def login():

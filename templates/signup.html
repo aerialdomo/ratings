@@ -1,4 +1,28 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+<form method= 'POST' action='/signup'>
+	<h1>Sell Your Soul To Us:</h1>
+	Email:
+	<br>
+	<input type="text" name="email"></input>
+	<br>
+	Password:
+	<br>
+	<input type="text" name="password"></input>
+	<br>
+	Age:
+	<br>
+	<input type="text" name="age"></input>
+	<br>
+	Zipcode:
+	<br>
+	<input type="text" name="zipcode"></input>
+	<br>
+	<input type="submit">
+	<br>
+
+</form>
+	<!--<a href="/signup.html">Sign your Soul Off Today!</a>!-->
 {% endblock %}
