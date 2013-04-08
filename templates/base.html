@@ -4,6 +4,9 @@
 			<title>Judgmental Eye</title>
 	</head>	
 </body>
+			{% if page != '/login' %}?????
+			<div align='right'><a href="/logout" >Log Out</a></div>
+			{% endif %}
 			{% block content %}
 			{% endblock %}
 	
